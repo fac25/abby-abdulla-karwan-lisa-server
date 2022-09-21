@@ -5,6 +5,9 @@ const bodyParser = express.urlencoded();
 
 const server = express();
 
+const staticHandler = express.static("../public");
+server.use(staticHandler);
+
 const posts = [
   {
     name: "Abby",
@@ -26,7 +29,7 @@ const validator = {
 server.get("/", (req, res) => {
   const postList = posts.map((post) => {
     return `
-    <div>
+    <div class="post-block">
     <h2>${sanitize(post.name)}</h2>
     <p>${sanitize(post.message)}</p>
     <p>${post.date}</p>
@@ -38,6 +41,7 @@ server.get("/", (req, res) => {
         <head>
         <meta charset="utf-8">
         <title>Home</title>
+        <link rel="stylesheet" href="style.css">
         </head>
         <body>
         <h1>Micro Blog</h1>
@@ -48,7 +52,7 @@ server.get("/", (req, res) => {
             <label for="message">Write your post</label>
             <textarea name="message" id="message" >${values.message}</textarea>
             ${validator.message ? `<span>Please write your message</span>` : ""}
-            <button type="submit">Post</button>
+            <button type="submit" id="post-btn">Post</button>
         </form>
         ${postList} 
         </body>
