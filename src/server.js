@@ -16,6 +16,16 @@ const posts = [
   },
 ];
 
+const values = {
+  name: "",
+  message: "",
+};
+
+const validator = {
+  name: false,
+  message: false,
+};
+
 server.get("/", (req, res) => {
   const postList = posts.map((post) => {
     return `
@@ -37,9 +47,11 @@ server.get("/", (req, res) => {
         <h1>Micro Blog</h1>
         <form method="POST" action="/">
             <label for="name">Insert your name</label>
-            <input type="text" name="name" id="name"/>
+            <input type="text" name="name" id="name" value="${values.name}"/>
+            ${validator.name ? `<span>Please write your name</span>` : ""}
             <label for="message">Write your post</label>
-            <textarea name="message" id="message"></textarea>
+            <textarea name="message" id="message" >${values.message}</textarea>
+            ${validator.message ? `<span>Please write your message</span>` : ""}
             <button type="submit" id="post-btn">Post</button>
         </form>
         ${postList} 
@@ -52,43 +64,36 @@ server.post("/", bodyParser, (req, res) => {
   const name = req.body.name;
   const message = req.body.message;
   const date = Date();
-  let nameError = false;
-  let messageError = false;
-  if (name.trim() === "" || message.trim() === "") {
-    const postList = posts.map((post) => {
-      return `
-      <div>
-      <h2>${sanitize(post.name)}</h2>
-      <p>${sanitize(post.message)}</p>
-      <p>${post.date}</p>
-      </div>`;
-    });
-    nameError = true;
-    messageError = true;
-    res.status(400).send(`<!DOCTYPE html>
-    <html>
-        <head>
-        <meta charset="utf-8">
-        <title>Home</title>
-        </head>
-        <body>
-        <h1>Micro Blog</h1>
-        <form method="POST" action="/">
-            <label for="name">Insert your name</label>
-            <input type="text" name="name" id="name" required/>
-            ${nameError ? `<span>Please write your name</span>` : ""}
-            <label for="message">Write your post</label>
-            ${messageError ? `<span>Please write your name</span>` : ""}
-            <textarea name="message" id="message" required></textarea>
-            <button type="submit">Post</button>
-        </form>
-        ${postList} 
-        </body>
-    </html>`);
+
+  if (!name.trim() && !message.trim()) {
+    validator.name = true;
+    validator.message = true;
+    res.redirect("/");
+  } else if (!name.trim()) {
+    values.message = message;
+
+    validator.name = true;
+    validator.message = false;
+    res.redirect("/");
+  } else if (!message.trim()) {
+    values.name = name;
+
+    validator.message = true;
+    validator.name = false;
+    res.redirect("/");
   } else {
+    values.name = "";
+    values.message = "";
     posts.push({ name, message, date });
     res.redirect("/");
   }
 });
+
+
+server.use((req, res) =>{
+    res.send(
+      `<h1>Opps 404!</h1>`
+    )
+})
 
 module.exports = server;
