@@ -4,7 +4,25 @@ const bodyParser = express.urlencoded();
 
 const server = express();
 
+const posts = [{
+  name: "Abby",
+  message: "Abby is the BOSS!",
+  date: "02/26/2022"
+}];
+
+
+
 server.get("/", (req, res) => {
+
+  const postList = posts.map(post => {
+    return `
+    <div>
+    <h2>${post.name}</h2>
+    <p>${post.message}</p>
+    <p>${post.date}</p>
+    </div>`
+  })
+
   const content = `<!DOCTYPE html>
     <html>
         <head>
@@ -20,26 +38,21 @@ server.get("/", (req, res) => {
             <textarea name="message" id="message"></textarea>
             <button type="submit">Post</button>
         </form>
+        ${postList} 
         </body>
     </html>`;
   res.send(content);
 });
 
-const posts = [{
-  name: "Abby",
-  message: "Abby is the BOSS!",
-  date: "02/26/2022"
-}];
-
 
 server.post("/", bodyParser, (req, res) => {
-    const name = req.body.name;
-    const message = req.body.message;
-    const date = Date()
+  const name = req.body.name;
+  const message = req.body.message;
+  const date = Date()
 
-    posts.push({name, message, date})
-    res.redirect("/")
-  });
+  posts.push({ name, message, date })
+  res.redirect("/")
+});
 
 module.exports = server;
 
