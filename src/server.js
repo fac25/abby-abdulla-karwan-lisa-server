@@ -9,7 +9,8 @@ const server = express();
 const staticHandler = express.static("public");
 server.use(staticHandler);
 
-let posts = [
+//dummy data
+const posts = [
   {
     id: 1,
     name: "Abby",
@@ -29,6 +30,7 @@ const validator = {
 };
 
 server.get("/", (req, res) => {
+  //mapping through posts and adding date and sanitized name and message
   const postList = posts.map((post) => {
     return `
     <form class="post-block" method="POST" action="/delete/${post.id}">
@@ -37,17 +39,28 @@ server.get("/", (req, res) => {
     <p>${post.date}</p>
     <button type="submit">Delete</button>
     </form>`;
+    <li class="post-block">
+    <h2>${sanitize(post.name)}</h2>
+    <p>${sanitize(post.message)}</p>
+    <p>${post.date}</p>
+    <button class="btn">delete</button>
+    </li>`;
   });
 
+  //html form, including validation for name and message and postList
   const content = `<!DOCTYPE html>
     <html>
         <head>
+        <meta name="viewport" content="width=device-width">
         <meta charset="utf-8">
         <title>Home</title>
         <link rel="stylesheet" href="style.css">
         </head>
         <body>
+        <header class="main-header">
         <h1>Micro Blog</h1>
+        </header
+        <main>
         <form method="POST" action="/">
             <label for="name">Insert your name</label>
             <input type="text" name="name" id="name" value="${values.name}"/>
@@ -55,9 +68,12 @@ server.get("/", (req, res) => {
             <label for="message">Write your post</label>
             <textarea name="message" id="message" >${values.message}</textarea>
             ${validator.message ? `<span>Please write your message</span>` : ""}
-            <button type="submit" id="post-btn">Post</button>
+            <button type="submit" class="btn">Post</button>
         </form>
+        <ul>
         ${postList} 
+        </ul>
+        </main>
         </body>
     </html>`;
   res.send(content);
@@ -77,6 +93,8 @@ server.post("/", bodyParser, (req, res) => {
   const name = req.body.name;
   const message = req.body.message;
   const date = Date();
+  console.log(name);
+  console.log(message);
 
   if (!name.trim() && !message.trim()) {
     validator.name = true;
@@ -106,7 +124,7 @@ server.post("/", bodyParser, (req, res) => {
 });
 
 server.use((req, res) => {
-  res.send(`<h1>Opps 404!</h1>`);
+  res.status(404).send(`<h1>Opps 404!</h1>`);
 });
 
 module.exports = server;
