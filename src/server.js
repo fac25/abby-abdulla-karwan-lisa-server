@@ -139,6 +139,8 @@ server.post("/", bodyParser, (req, res) => {
       date,
       like: 0,
     });
+    validator.message = false;
+    validator.name = false;
   }
   res.redirect("/");
 });
