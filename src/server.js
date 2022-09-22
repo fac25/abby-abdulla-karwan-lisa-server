@@ -8,6 +8,7 @@ const server = express();
 const staticHandler = express.static("public");
 server.use(staticHandler);
 
+//dummy data
 const posts = [
   {
     name: "Abby",
@@ -26,7 +27,10 @@ const validator = {
   message: false,
 };
 
+
 server.get("/", (req, res) => {
+
+  //mapping through posts and adding date and sanitized name and message
   const postList = posts.map((post) => {
     return `
     <div class="post-block">
@@ -36,6 +40,7 @@ server.get("/", (req, res) => {
     </div>`;
   });
 
+  //html form, including validation for name and message and postList
   const content = `<!DOCTYPE html>
     <html>
         <head>
@@ -64,6 +69,8 @@ server.post("/", bodyParser, (req, res) => {
   const name = req.body.name;
   const message = req.body.message;
   const date = Date();
+  console.log(name)
+  console.log(message)
 
   if (!name.trim() && !message.trim()) {
     validator.name = true;
@@ -88,7 +95,7 @@ server.post("/", bodyParser, (req, res) => {
 });
 
 server.use((req, res) => {
-  res.send(`<h1>Opps 404!</h1>`);
+  res.status(404).send(`<h1>Opps 404!</h1>`);
 });
 
 module.exports = server;
