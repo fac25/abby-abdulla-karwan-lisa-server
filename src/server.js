@@ -1,3 +1,4 @@
+const e = require("express");
 const express = require("express");
 const { sanitize, validation } = require("./templates.js");
 
@@ -8,8 +9,9 @@ const server = express();
 const staticHandler = express.static("public");
 server.use(staticHandler);
 
-const posts = [
+let posts = [
   {
+    id: 1,
     name: "Abby",
     message: "Abby is the BOSS!",
     date: "02/26/2022",
@@ -29,11 +31,12 @@ const validator = {
 server.get("/", (req, res) => {
   const postList = posts.map((post) => {
     return `
-    <div class="post-block">
+    <form class="post-block" method="POST" action="/delete/${post.id}">
     <h2>${sanitize(post.name)}</h2>
     <p>${sanitize(post.message)}</p>
     <p>${post.date}</p>
-    </div>`;
+    <button type="submit">Delete</button>
+    </form>`;
   });
 
   const content = `<!DOCTYPE html>
@@ -60,6 +63,16 @@ server.get("/", (req, res) => {
   res.send(content);
 });
 
+server.post("/delete/:id", bodyParser, (req, res) => {
+  const id = req.params.id;
+  posts.map(post => {
+    if(post.id === +id){
+      posts.splice(id - 1, 1)
+    }
+  })
+  res.redirect("/")
+});
+
 server.post("/", bodyParser, (req, res) => {
   const name = req.body.name;
   const message = req.body.message;
@@ -82,7 +95,12 @@ server.post("/", bodyParser, (req, res) => {
   } else {
     values.name = "";
     values.message = "";
-    posts.push({ name, message, date });
+    posts.push({
+      id: posts.length === 0 ? 1 : posts[posts.length - 1].id + 1,
+      name,
+      message,
+      date,
+    });
   }
   res.redirect("/");
 });
