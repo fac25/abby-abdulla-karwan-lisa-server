@@ -13,7 +13,7 @@ test("home route returns expected page", async () => {
 
     assert.equal(response.status, 200);
     const body = await response.text();
-    assert.match(body, /Micro Blog/);
+    assert.match(body, /Gebloggt/);
 });
 
 test("error route response", async () => {
