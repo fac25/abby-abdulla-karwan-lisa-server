@@ -16,4 +16,4 @@ This [project](https://abby-abdulla-karwan-lisa.herokuapp.com/) was made during 
 - [x] The ability to add posts to the page.
 - [x] The ability to delete posts from the page.
 - [x] The ability for the user to like a post.
-- [] Make sure the page is accessible all users.
+- [ ] Make sure the page is accessible all users.
