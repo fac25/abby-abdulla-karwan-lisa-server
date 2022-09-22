@@ -49,7 +49,7 @@ server.get("/", (req, res) => {
   });
 
   //html form, including validation for name and message and postList
-  const content = `< !DOCTYPE html >
+  const content = `
     <html>
       <head>
         <meta name="viewport" content="width=device-width">
