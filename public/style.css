@@ -1,6 +1,7 @@
 :root {
   --primary-color: #bc8f8f;
   --secondary-color: #d8d0c1;
+  font-family: 'Lobster', 'Poppins', sans-serif, cursive;
 }
 
 * {
@@ -11,9 +12,12 @@
 body {
   text-align: center;
   background-color: var(--primary-color);
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
+h1{
+  font-family: 'Poppins';
+}
 main {
   width: 90%;
   margin-right: auto;
@@ -32,19 +36,13 @@ button {
   cursor: pointer;
 }
 
-.main-header {
-}
-
-form {
+.submit-form {
   background-color: var(--secondary-color);
   max-width: 220px;
   margin-left: auto;
   margin-right: auto;
   padding-top: 10px;
   padding-bottom: 10px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
   border-radius: 0.5rem;
   border: 1px solid black;
 }
@@ -60,15 +58,15 @@ form {
   padding: 8px;
 }
 
-form > * {
+.submit-form  > * {
   margin-top: 0.3rem;
 }
 
-input {
+.submit-form >input {
   border: 1px solid black;
 }
 
-.btn {
+ .btn {
   min-width: 100px;
   min-height: 30px;
   line-height: 1;
@@ -102,20 +100,41 @@ h1 {
   margin-right: auto;
   padding-top: 10px;
   padding-bottom: 10px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  text-align: left;
   box-shadow: 10px 10px black;
   overflow: auto;
 }
 
+.post-message{
+  background-color: #ffffff;
+
+}
+
 h2 {
-  text-align: center;
+  display:flex; 
+  text-align: left;
+  margin: 1rem 0 1rem 3rem;
 }
 
 p {
   margin: 1rem 0;
+  height:auto;
+}
+
+
+#delete{
+  min-width: 80px;
+  min-height: 15px;
+  line-height: 1;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border: 3px solid #3419c0;
+  background: #fff;
+  color: #3419c0;
+  border-radius: 40px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.35s;
 }
 
 @media (min-width: 540px) {
@@ -124,4 +143,30 @@ p {
     margin-right: auto;
     margin-left: auto;
   }
+}
+
+.message {
+  background-color: white;
+  border-radius: 5px;
+  margin: 1rem 5rem 1rem 5rem;
+}
+
+.error{
+  color:red;
+}
+
+#like {
+  min-width: 80px;
+  min-height: 15px;
+  line-height: 1;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border: 3px solid #8B0000;
+  background: #fff;
+  color: #8B0000;
+  border-radius: 40px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.35s;
 }
