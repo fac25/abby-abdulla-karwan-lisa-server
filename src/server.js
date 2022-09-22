@@ -39,12 +39,6 @@ server.get("/", (req, res) => {
     <p>${post.date}</p>
     <button type="submit">Delete</button>
     </form>`;
-    <li class="post-block">
-    <h2>${sanitize(post.name)}</h2>
-    <p>${sanitize(post.message)}</p>
-    <p>${post.date}</p>
-    <button class="btn">delete</button>
-    </li>`;
   });
 
   //html form, including validation for name and message and postList
