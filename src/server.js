@@ -27,29 +27,32 @@ const validator = {
   message: false,
 };
 
-
 server.get("/", (req, res) => {
-
   //mapping through posts and adding date and sanitized name and message
   const postList = posts.map((post) => {
     return `
-    <div class="post-block">
+    <li class="post-block">
     <h2>${sanitize(post.name)}</h2>
     <p>${sanitize(post.message)}</p>
     <p>${post.date}</p>
-    </div>`;
+    <button class="btn">delete</button>
+    </li>`;
   });
 
   //html form, including validation for name and message and postList
   const content = `<!DOCTYPE html>
     <html>
         <head>
+        <meta name="viewport" content="width=device-width">
         <meta charset="utf-8">
         <title>Home</title>
         <link rel="stylesheet" href="style.css">
         </head>
         <body>
+        <header class="main-header">
         <h1>Micro Blog</h1>
+        </header
+        <main>
         <form method="POST" action="/">
             <label for="name">Insert your name</label>
             <input type="text" name="name" id="name" value="${values.name}"/>
@@ -57,9 +60,12 @@ server.get("/", (req, res) => {
             <label for="message">Write your post</label>
             <textarea name="message" id="message" >${values.message}</textarea>
             ${validator.message ? `<span>Please write your message</span>` : ""}
-            <button type="submit" id="post-btn">Post</button>
+            <button type="submit" class="btn">Post</button>
         </form>
+        <ul>
         ${postList} 
+        </ul>
+        </main>
         </body>
     </html>`;
   res.send(content);
@@ -69,8 +75,8 @@ server.post("/", bodyParser, (req, res) => {
   const name = req.body.name;
   const message = req.body.message;
   const date = Date();
-  console.log(name)
-  console.log(message)
+  console.log(name);
+  console.log(message);
 
   if (!name.trim() && !message.trim()) {
     validator.name = true;
@@ -89,7 +95,12 @@ server.post("/", bodyParser, (req, res) => {
   } else {
     values.name = "";
     values.message = "";
-    posts.push({ name, message, date });
+    posts.push({
+      id: posts.length < 1 ? 1 : posts[posts.length - 1].id + 1,
+      name,
+      message,
+      date,
+    });
   }
   res.redirect("/");
 });
