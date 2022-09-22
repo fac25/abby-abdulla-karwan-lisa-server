@@ -68,32 +68,27 @@ server.post("/", bodyParser, (req, res) => {
   if (!name.trim() && !message.trim()) {
     validator.name = true;
     validator.message = true;
-    res.redirect("/");
   } else if (!name.trim()) {
     values.message = message;
-
+    values.name = "";
     validator.name = true;
     validator.message = false;
-    res.redirect("/");
   } else if (!message.trim()) {
     values.name = name;
+    values.message = "";
 
     validator.message = true;
     validator.name = false;
-    res.redirect("/");
   } else {
     values.name = "";
     values.message = "";
     posts.push({ name, message, date });
-    res.redirect("/");
   }
+  res.redirect("/");
 });
 
-
-server.use((req, res) =>{
-    res.send(
-      `<h1>Opps 404!</h1>`
-    )
-})
+server.use((req, res) => {
+  res.send(`<h1>Opps 404!</h1>`);
+});
 
 module.exports = server;
