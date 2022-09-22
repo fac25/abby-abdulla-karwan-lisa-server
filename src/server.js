@@ -34,16 +34,17 @@ server.get("/", (req, res) => {
   //mapping through posts and adding date and sanitized name and message
   const postList = posts.map((post) => {
     return `
-    <form class="post-block" method="POST" action="/delete/${post.id}">
+    <form class="post-block" method="POST" action="/likes/${post.id}">
     <h2>${sanitize(post.name)}</h2>
-    <p>${sanitize(post.message)}</p>
+    <p class="post-message">${sanitize(post.message)}</p>
     <p>${post.date}</p>
     <p>Likes:${post.like}</p>
-    <button type="submit">Delete</button>
+    <button id= "like" type="submit">Like</button>
     </form > 
-    <form class="post-block" method="POST" action="/likes/${post.id}">
-    <button type="submit">Like</button>
-    </form>`;
+    <form class="delete" method="POST" action="/delete/${post.id}">
+    <button id="delete" type="submit">Delete</button>
+    </form>`
+    ;
   });
 
   //html form, including validation for name and message and postList
@@ -54,25 +55,28 @@ server.get("/", (req, res) => {
           <meta charset="utf-8">
             <title>Home</title>
             <link rel="stylesheet" href="style.css">
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@200&display=swap" rel="stylesheet">
             </head>
             <body>
               <header class="main-header">
-                <h1>Micro Blog</h1>
+                <h1>Gebloggt</h1>
               </header
         <main>
-                <form method="POST" action="/">
+                <form method="POST" action="/" class="submit-form">
                   <label for="name">Insert your name</label>
                   <input type="text" name="name" id="name" value="${
                     values.name
                   }" />
-                  ${validator.name ? `<span>Please write your name</span>` : ""}
+                  ${validator.name ? `<span class="error">Please write your name</span>` : ""}
                   <label for="message">Write your post</label>
                   <textarea name="message" id="message" >${
                     values.message
                   }</textarea>
                   ${
                     validator.message
-                      ? `<span>Please write your message</span>`
+                      ? `<span class="error">Please write your message</span>`
                       : ""
                   }
                   <button type="submit" class="btn">Post</button>
@@ -109,7 +113,7 @@ server.post("/likes/:id", bodyParser, (req, res) => {
 server.post("/", bodyParser, (req, res) => {
   const name = req.body.name;
   const message = req.body.message;
-  const date = Date();
+  const date = new Date().toLocaleDateString("en-GB");
 
   if (!name.trim() && !message.trim()) {
     validator.name = true;
@@ -135,6 +139,8 @@ server.post("/", bodyParser, (req, res) => {
       date,
       like: 0,
     });
+    validator.message = false;
+    validator.name = false;
   }
   res.redirect("/");
 });
