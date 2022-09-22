@@ -41,11 +41,9 @@ server.get("/", (req, res) => {
     <p>Likes:${post.like}</p>
     <button type="submit">Delete</button>
     </form > 
-    <form class="post-block" method="POST" action="/likes/${post.like}">
+    <form class="post-block" method="POST" action="/likes/${post.id}">
     <button type="submit">Like</button>
-    </form>`
-
-      ;
+    </form>`;
   });
 
   //html form, including validation for name and message and postList
@@ -64,11 +62,19 @@ server.get("/", (req, res) => {
         <main>
                 <form method="POST" action="/">
                   <label for="name">Insert your name</label>
-                  <input type="text" name="name" id="name" value="${values.name}" />
+                  <input type="text" name="name" id="name" value="${
+                    values.name
+                  }" />
                   ${validator.name ? `<span>Please write your name</span>` : ""}
                   <label for="message">Write your post</label>
-                  <textarea name="message" id="message" >${values.message}</textarea>
-                  ${validator.message ? `<span>Please write your message</span>` : ""}
+                  <textarea name="message" id="message" >${
+                    values.message
+                  }</textarea>
+                  ${
+                    validator.message
+                      ? `<span>Please write your message</span>`
+                      : ""
+                  }
                   <button type="submit" class="btn">Post</button>
                 </form>
                 <ul>
@@ -82,27 +88,28 @@ server.get("/", (req, res) => {
 
 server.post("/delete/:id", bodyParser, (req, res) => {
   const id = req.params.id;
-  posts.map(post => {
+  posts.map((post) => {
     if (post.id === +id) {
-      posts.splice(id - 1, 1)
+      posts.splice(id - 1, 1);
     }
-  })
-  res.redirect("/")
+  });
+  res.redirect("/");
 });
 
 server.post("/likes/:id", bodyParser, (req, res) => {
   const likes = req.params.id;
-  posts.map(post => {
-    post.like = +likes + 1
-  })
-  res.redirect("/")
+  posts.map((post) => {
+    if (post.id === +likes) {
+      post.like =  post.like +1;
+    }
+  });
+  res.redirect("/");
 });
 
 server.post("/", bodyParser, (req, res) => {
   const name = req.body.name;
   const message = req.body.message;
   const date = Date();
-
 
   if (!name.trim() && !message.trim()) {
     validator.name = true;
@@ -126,6 +133,7 @@ server.post("/", bodyParser, (req, res) => {
       name,
       message,
       date,
+      like: 0,
     });
   }
   res.redirect("/");
