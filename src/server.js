@@ -5,7 +5,7 @@ const bodyParser = express.urlencoded();
 
 const server = express();
 
-const staticHandler = express.static("../public");
+const staticHandler = express.static("public");
 server.use(staticHandler);
 
 const posts = [
