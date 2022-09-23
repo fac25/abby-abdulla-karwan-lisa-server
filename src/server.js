@@ -42,9 +42,9 @@ server.get("/", (req, res) => {
 });
 
 server.post("/delete/:id", bodyParser, (req, res) => {
-  const id = req.params.id;
+  const id = parseInt(req.params.id);
   posts.reverse().map((post) => {
-    if (post.id === +id) {
+    if (post.id === id) {
       posts.splice(id - 1, 1);
     }
   });
@@ -52,9 +52,9 @@ server.post("/delete/:id", bodyParser, (req, res) => {
 });
 
 server.post("/likes/:id", bodyParser, (req, res) => {
-  const likes = req.params.id;
+  const likes = parseInt(req.params.id);
   posts.reverse().map((post) => {
-    if (post.id === +likes) {
+    if (post.id === likes) {
       post.like = post.like + 1;
     }
   });
