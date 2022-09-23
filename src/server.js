@@ -34,17 +34,18 @@ server.get("/", (req, res) => {
   //mapping through posts and adding date and sanitized name and message
   const postList = posts.map((post) => {
     return `
+    <li>
     <form class="post-block" method="POST" action="/likes/${post.id}">
     <h2>${sanitize(post.name)}</h2>
     <p class="post-message">${sanitize(post.message)}</p>
     <p>${post.date}</p>
     <p>Likes:${post.like}</p>
-    <button id= "like" type="submit">Like</button>
+    <button id= "like" class="like" type="submit">Like</button>
     </form > 
     <form class="delete" method="POST" action="/delete/${post.id}">
-    <button id="delete" type="submit">Delete</button>
-    </form>`
-    ;
+    <button id="delete" class="delete" type="submit">Delete</button>
+    </form>
+    </li>`;
   });
 
   //html form, including validation for name and message and postList
@@ -62,16 +63,20 @@ server.get("/", (req, res) => {
             <body>
               <header class="main-header">
                 <h1>Gebloggt</h1>
-              </header
-        <main>
+              </header>
+              <main class="main">
                 <form method="POST" action="/" class="submit-form">
                   <label for="name">Insert your name</label>
-                  <input type="text" name="name" id="name" value="${
+                  <input type="text" name="name" class="name-input" id="name" value="${
                     values.name
                   }" />
-                  ${validator.name ? `<span class="error">Please write your name</span>` : ""}
+                  ${
+                    validator.name
+                      ? `<span class="error">Please write your name</span>`
+                      : ""
+                  }
                   <label for="message">Write your post</label>
-                  <textarea name="message" id="message" >${
+                  <textarea name="message" class="message" id="message" >${
                     values.message
                   }</textarea>
                   ${
@@ -84,7 +89,7 @@ server.get("/", (req, res) => {
                 <ul>
                   ${postList}
                 </ul>
-              </main>
+              </main class="main">
             </body>
           </html>`;
   res.send(content);
@@ -104,7 +109,7 @@ server.post("/likes/:id", bodyParser, (req, res) => {
   const likes = req.params.id;
   posts.map((post) => {
     if (post.id === +likes) {
-      post.like =  post.like +1;
+      post.like = post.like + 1;
     }
   });
   res.redirect("/");
