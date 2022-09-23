@@ -33,24 +33,26 @@ const validator = {
 server.get("/", (req, res) => {
   //mapping through posts and adding date and sanitized name and message
   const postList = posts.map((post) => {
+    
     return `
-    <li>
-    <form class="post-block" method="POST" action="/likes/${post.id}">
+    <li class="post-block">
+    <form method="POST" action="/likes/${post.id}">
     <h2>${sanitize(post.name)}</h2>
     <p class="post-message">${sanitize(post.message)}</p>
     <p>${post.date}</p>
     <p>Likes:${post.like}</p>
     <button id= "like" class="like" type="submit">Like</button>
     </form > 
-    <form class="delete" method="POST" action="/delete/${post.id}">
-    <button id="delete" class="delete" type="submit">Delete</button>
+    <form method="POST" action="/delete/${post.id}">
+    <button class="delete" type="submit">Delete</button>
     </form>
     </li>`;
   });
 
   //html form, including validation for name and message and postList
   const content = `
-    <html>
+  <!DOCTYPE html>
+    <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width">
           <meta charset="utf-8">
@@ -67,29 +69,28 @@ server.get("/", (req, res) => {
               <main class="main">
                 <form method="POST" action="/" class="submit-form">
                   <label for="name">Insert your name</label>
-                  <input type="text" name="name" class="name-input" id="name" value="${
-                    values.name
-                  }" />
-                  ${
-                    validator.name
-                      ? `<span class="error">Please write your name</span>`
-                      : ""
-                  }
+                  <input type="text" name="name" class="name-input" id="name" value="${values.name
+    }" />
+                  ${validator.name
+      ? `<span class="error">Please write your name</span>`
+      : ""
+    }
                   <label for="message">Write your post</label>
-                  <textarea name="message" class="message" id="message" >${
-                    values.message
-                  }</textarea>
-                  ${
-                    validator.message
-                      ? `<span class="error">Please write your message</span>`
-                      : ""
-                  }
+                  <textarea name="message" class="message" id="message" >${values.message
+    }</textarea>
+                  ${validator.message
+      ? `<span class="error">Please write your message</span>`
+      : ""
+    }
                   <button type="submit" class="btn">Post</button>
                 </form>
                 <ul>
-                  ${postList}
+                  ${postList.join('')}
                 </ul>
-              </main class="main">
+              </main>
+              <footer>
+                <p>@2022 Abby-Abdullah-Karwan-Lsa</p>
+              </footer>
             </body>
           </html>`;
   res.send(content);
