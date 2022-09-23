@@ -8,7 +8,7 @@ This [project](https://abby-abdulla-karwan-lisa.herokuapp.com/) was made during 
 
 - Clone the repository.
 - Install Node and NPM, if you already don't have them.
-- Go to the directory of the cloned repo and run npm install.
+- Go to the directory of the cloned repo and run "npm install".
 - To see it locally run npm run dev. 
 
 ## User stories
@@ -17,3 +17,8 @@ This [project](https://abby-abdulla-karwan-lisa.herokuapp.com/) was made during 
 - [x] The ability to delete posts from the page.
 - [x] The ability for the user to like a post.
 - [ ] Make sure the page is accessible all users.
+
+## Run the tests
+
+- To run the whole test file write run "npm test" in the terminal.
+- To run the tests individually go to the test directory and run "node server.test.js".
