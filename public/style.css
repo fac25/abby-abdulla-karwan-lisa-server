@@ -1,6 +1,7 @@
 :root {
   --primary-color: #bc8f8f;
   --secondary-color: #d8d0c1;
+  --shadow: 10px 10px rgba(0, 0, 0, .3);
   font-family: "Lobster", "Poppins", sans-serif, cursive;
 }
 
@@ -15,9 +16,15 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
-h1 {
-  font-family: "Poppins";
+ul {
+  list-style: none;
 }
+
+h1 {
+  font-family: "Lobster";
+  font-size: 3rem;
+}
+
 main {
   width: 90%;
   margin-right: auto;
@@ -37,33 +44,42 @@ button {
 }
 
 .submit-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: var(--secondary-color);
-  max-width: 220px;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px 5px;
+  border-radius: 0.7rem;
+  border: 13px double rgb(140, 140, 140);
+}
+
+.submit-form>label {
+  display: block;
+
+}
+
+.submit-form>textarea {
+  width: 80%;
+}
+
+.name {
   border-radius: 0.5rem;
-  border: 1px solid black;
+  padding: .5rem;
 }
 
-#name {
-  border-radius: 0.5rem;
-}
 
-#message {
-  max-width: 200px;
-  min-height: 100px;
-  border-radius: 1rem;
-  padding: 8px;
-}
-
-.submit-form > * {
+.submit-form>* {
   margin-top: 0.3rem;
 }
 
-.submit-form > input {
+.submit-form>input {
   border: 1px solid black;
+  width: 50%;
+  border-radius: 0.3rem;
+  padding: 8px;
 }
 
 .btn {
@@ -73,9 +89,9 @@ button {
   font-size: 18px;
   font-weight: bold;
   letter-spacing: 1px;
-  border: 3px solid #6f686d;
+  border: 3px solid #4c8eff;
   background: #fff;
-  color: #6f686d;
+  color: #4c8eff;
   border-radius: 40px;
   cursor: pointer;
   overflow: hidden;
@@ -83,7 +99,7 @@ button {
 }
 
 .btn:hover {
-  background: #423b40;
+  background: #2372fb;
   color: #fff;
 }
 
@@ -100,12 +116,15 @@ h1 {
   margin-right: auto;
   padding-top: 10px;
   padding-bottom: 10px;
-  box-shadow: 10px 10px black;
+  box-shadow: var(--shadow);
   overflow: auto;
 }
 
 .post-message {
   background-color: #ffffff;
+  word-wrap: break-word;
+  border-radius: 2px;
+  padding: 1rem
 }
 
 h2 {
@@ -119,20 +138,21 @@ p {
   height: auto;
 }
 
-#delete {
+.delete {
   min-width: 80px;
   min-height: 15px;
   line-height: 1;
   font-size: 16px;
   font-weight: bold;
   letter-spacing: 1px;
-  border: 3px solid #3419c0;
+  border: 3px solid #372f65;
   background: #fff;
-  color: #3419c0;
+  color: #372f65;
   border-radius: 40px;
   cursor: pointer;
   overflow: hidden;
   transition: all 0.35s;
+  margin-top: 0.8rem;
 }
 
 @media (min-width: 540px) {
@@ -141,20 +161,29 @@ p {
     margin-right: auto;
     margin-left: auto;
   }
+
+
 }
 
 .message {
   background-color: white;
   border-radius: 5px;
-  margin: 1rem 5rem 1rem 5rem;
+  flex: 1;
+  max-width: 100%;
+  min-height: 100px;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 1rem;
+  padding: 8px;
 }
 
 .error {
   color: red;
 }
 
-#like {
+.like {
   min-width: 80px;
+  /* margin-bottom: .5rem; */
   min-height: 15px;
   line-height: 1;
   font-size: 16px;
