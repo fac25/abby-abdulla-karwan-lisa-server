@@ -1,6 +1,7 @@
-const e = require("express");
 const express = require("express");
-const { sanitize, validation } = require("./templates.js");
+const { sanitize, content } = require("./templates.js");
+
+const {posts} = require("./data")
 
 const bodyParser = express.urlencoded();
 
@@ -9,16 +10,6 @@ const server = express();
 const staticHandler = express.static("public");
 server.use(staticHandler);
 
-//dummy data
-const posts = [
-  {
-    id: 1,
-    name: "Abby",
-    message: "Abby is the BOSS!",
-    date: "02/26/2022",
-    like: 0,
-  },
-];
 
 const values = {
   name: "",
@@ -32,8 +23,7 @@ const validator = {
 
 server.get("/", (req, res) => {
   //mapping through posts and adding date and sanitized name and message
-  const postList = posts.map((post) => {
-    
+  const postList = posts.reverse().map((post) => {
     return `
     <li class="post-block">
     <form method="POST" action="/likes/${post.id}">
@@ -48,57 +38,12 @@ server.get("/", (req, res) => {
     </form>
     </li>`;
   });
-
-  //html form, including validation for name and message and postList
-  const content = `
-  <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta name="viewport" content="width=device-width">
-          <meta charset="utf-8">
-            <title>Home</title>
-            <link rel="stylesheet" href="style.css">
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@200&display=swap" rel="stylesheet">
-            </head>
-            <body>
-              <header class="main-header">
-                <h1>Gebloggt</h1>
-              </header>
-              <main class="main">
-                <form method="POST" action="/" class="submit-form">
-                  <label for="name">Insert your name</label>
-                  <input type="text" name="name" class="name-input" id="name" value="${values.name
-    }" />
-                  ${validator.name
-      ? `<span class="error">Please write your name</span>`
-      : ""
-    }
-                  <label for="message">Write your post</label>
-                  <textarea name="message" class="message" id="message" >${values.message
-    }</textarea>
-                  ${validator.message
-      ? `<span class="error">Please write your message</span>`
-      : ""
-    }
-                  <button type="submit" class="btn">Post</button>
-                </form>
-                <ul>
-                  ${postList.join('')}
-                </ul>
-              </main>
-              <footer>
-                <p>@2022 Abby-Abdullah-Karwan-Lsa</p>
-              </footer>
-            </body>
-          </html>`;
-  res.send(content);
+  res.send(content(validator, values, postList));
 });
 
 server.post("/delete/:id", bodyParser, (req, res) => {
   const id = req.params.id;
-  posts.map((post) => {
+  posts.reverse().map((post) => {
     if (post.id === +id) {
       posts.splice(id - 1, 1);
     }
@@ -108,7 +53,7 @@ server.post("/delete/:id", bodyParser, (req, res) => {
 
 server.post("/likes/:id", bodyParser, (req, res) => {
   const likes = req.params.id;
-  posts.map((post) => {
+  posts.reverse().map((post) => {
     if (post.id === +likes) {
       post.like = post.like + 1;
     }
@@ -138,7 +83,7 @@ server.post("/", bodyParser, (req, res) => {
   } else {
     values.name = "";
     values.message = "";
-    posts.push({
+    posts.reverse().push({
       id: posts.length === 0 ? 1 : posts[posts.length - 1].id + 1,
       name,
       message,
@@ -155,4 +100,4 @@ server.use((req, res) => {
   res.status(404).send(`<h1>Opps 404!</h1>`);
 });
 
-module.exports = server;
+module.exports = { server };
